@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 210 25% 97%;
+    --foreground: 207 60% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 207 60% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 60% 18%;
+
+    --primary: 207 72% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 207 20% 93%;
+    --secondary-foreground: 207 60% 18%;
+
+    --muted: 207 15% 94%;
+    --muted-foreground: 207 15% 46%;
+
+    --accent: 90 50% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 207 18% 89%;
+    --input: 207 18% 89%;
+    --ring: 207 72% 32%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 207 60% 18%;
+    --sidebar-foreground: 207 10% 92%;
+    --sidebar-primary: 90 50% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 207 50% 24%;
+    --sidebar-accent-foreground: 207 10% 92%;
+    --sidebar-border: 207 40% 28%;
+    --sidebar-ring: 90 50% 42%;
+
+    --surface-elevated: 0 0% 100%;
+    --success: 90 50% 42%;
+    --warning: 38 92% 50%;
+    --ekt-blue: 207 72% 32%;
+    --ekt-green: 90 50% 42%;
+    --ekt-blue-light: 207 60% 94%;
+    --ekt-green-light: 90 40% 94%;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.03);
+  }
+}
+
+@keyframes float-medium {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(10px, -10px, 0);
+  }
+}
+
+@keyframes float-fast {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-8px, -12px, 0);
+  }
+}
+
+@keyframes hero-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 7s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 5.5s ease-in-out infinite;
+}
+
+.animate-hero-drift {
+  animation: hero-drift 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-float-slow,
+  .animate-float-medium,
+  .animate-float-fast,
+  .animate-hero-drift {
+    animation: none;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
