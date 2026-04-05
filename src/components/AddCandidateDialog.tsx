@@ -27,6 +27,14 @@ interface AddCandidateDialogProps {
   triggerClassName?: string;
 }
 
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+
+  return "Erro ao salvar candidato.";
+}
+
 export function AddCandidateDialog({
   onAdded,
   triggerClassName,
@@ -122,8 +130,8 @@ export function AddCandidateDialog({
       reset();
       setOpen(false);
       onAdded();
-    } catch (err: any) {
-      toast.error(err.message || "Erro ao salvar candidato.");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
