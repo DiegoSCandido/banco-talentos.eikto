@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { MapPin, Phone, User, Star, StarOff } from "lucide-react";
 import { candidatesApi } from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
@@ -35,6 +36,8 @@ interface CandidateTableProps {
   candidates: Candidate[];
   onSelect: (candidate: Candidate) => void;
   isLoading: boolean;
+  errorMessage?: string;
+  onRetry?: () => void;
 }
 
 const statusLabels: Record<string, string> = {
@@ -56,6 +59,8 @@ export function CandidateTable({
   candidates,
   onSelect,
   isLoading,
+  errorMessage,
+  onRetry,
 }: CandidateTableProps) {
   const queryClient = useQueryClient();
 
@@ -91,6 +96,25 @@ export function CandidateTable({
             ))}
           </TableBody>
         </Table>
+      </div>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-lg border bg-card py-16 text-center">
+        <User className="mb-3 h-10 w-10 text-destructive/70" />
+        <p className="text-lg font-medium text-foreground">
+          Erro ao carregar candidatos
+        </p>
+        <p className="mt-1 max-w-md text-sm text-muted-foreground">
+          {errorMessage}
+        </p>
+        {onRetry ? (
+          <Button className="mt-4" variant="outline" onClick={onRetry}>
+            Tentar novamente
+          </Button>
+        ) : null}
       </div>
     );
   }

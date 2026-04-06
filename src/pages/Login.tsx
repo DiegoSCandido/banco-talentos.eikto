@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import eiktoLogoHero from "@/assets/Logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { session } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -24,7 +26,7 @@ const Login = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -32,8 +34,13 @@ const Login = () => {
     if (error) {
       toast.error("Email ou senha inválidos.");
     } else {
+      if (!data.session && !session) {
+        toast.error("Sessão não foi iniciada corretamente. Tente novamente.");
+        return;
+      }
+
       toast.success("Bem-vindo(a)!");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
 

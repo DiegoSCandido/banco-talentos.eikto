@@ -31,7 +31,7 @@ import eiktoLogoHero from "@/assets/Logo.png";
 
 const Index = () => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [cityFilter, setCityFilter] = useState("all");
@@ -39,10 +39,21 @@ const Index = () => {
   const [favoriteFilter, setFavoriteFilter] = useState(false);
   const [selected, setSelected] = useState<Candidate | null>(null);
 
-  const { data: candidates = [], isLoading } = useQuery({
+  const {
+    data: candidates = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ["candidates"],
     queryFn: () => candidatesApi.list(),
+    enabled: !authLoading && !!user,
   });
+
+  const queryErrorMessage =
+    error instanceof Error
+      ? error.message
+      : "Não foi possível carregar os candidatos.";
 
   const cities = useMemo(() => {
     const set = new Set(
@@ -239,6 +250,10 @@ const Index = () => {
           candidates={filtered}
           onSelect={setSelected}
           isLoading={isLoading}
+          errorMessage={error ? queryErrorMessage : undefined}
+          onRetry={() => {
+            void refetch();
+          }}
         />
       </div>
 
